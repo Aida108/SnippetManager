@@ -1,28 +1,59 @@
-import React, { Component } from 'react'
-import './App.css'
-import axios from 'axios'
+import React, { Component } from 'react';
+import { Navbar, Button } from 'react-bootstrap';
+import './App.css';
 
 class App extends Component {
-	
-	constructor () {
-    super()
-	this.state = {
-    username: ''
+  goTo(route) {
+    this.props.history.replace(`/${route}`)
   }
-    this.handleClick = this.handleClick.bind(this)
+
+  login() {
+    this.props.auth.login();
   }
-  handleClick () {
-  axios.get('https://api.github.com/users/Aida108')
-    .then(response => console.log(response))
-}
-  render () {
+
+  logout() {
+    this.props.auth.logout();
+  }
+
+  render() {
+    const { isAuthenticated } = this.props.auth;
+alert(isAuthenticated());
     return (
-      <div className='button__container'>
-        <button className='button' onClick={this.handleClick}>
-		Click Me
-		</button>
+      <div>
+        <Navbar fluid>
+          <Navbar.Header>
+            <Navbar.Brand>
+              <a href="#">Auth0 - React</a>
+            </Navbar.Brand>
+            {
+              !isAuthenticated() && (
+                  <Button
+                    id="qsLoginBtn"
+                    bsStyle="primary"
+                    className="btn-margin"
+                    onClick={this.login.bind(this)}
+                  >
+                    Log In
+                  </Button>
+                )
+            }
+            {
+              isAuthenticated() && (
+                  <Button
+                    id="qsLogoutBtn"
+                    bsStyle="primary"
+                    className="btn-margin"
+                    onClick={this.logout.bind(this)}
+                  >
+                    Log Out
+                  </Button>
+                )
+            }
+          </Navbar.Header>
+        </Navbar>
       </div>
-    )
+    );
   }
 }
-export default App
+
+export default App;
