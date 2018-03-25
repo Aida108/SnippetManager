@@ -1,5 +1,5 @@
 export const AUTH_CONFIG = {
   domain: 'snippetmanager.eu.auth0.com',
-  clientId: 'URuQzyI-mJsuBhrcf5Bp0DlGjoZfue5s',
-  callbackUrl: 'https://fathomless-hollows-69797.herokuapp.com/callback'
+  clientId: 'g41uvHBGfIVUc6rdsg45vxEjAWit1Yki',
+  callbackUrl: 'https://snippetmanager.eu.auth0.com/login/callback'
 }

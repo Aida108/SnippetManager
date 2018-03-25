@@ -23,6 +23,8 @@ class Login extends React.Component {
   handleSubmit(event) {
     alert('A name was submitted: ' + this.state.username + ' ' + this.state.password);
     event.preventDefault();
+    axios.get('https://api.github.com/login/oauth/authorize')
+   .then(response => console.log(response))
   }
 
   render() {

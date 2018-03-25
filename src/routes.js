@@ -10,9 +10,11 @@ import history from './history';
 const auth = new Auth();
 
 const handleAuthentication = ({location}) => {
+
   if (/access_token|id_token|error/.test(location.hash)) {
     auth.handleAuthentication();
   }
+
 }
 
 export const makeMainRoutes = () => {

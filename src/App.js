@@ -17,7 +17,7 @@ class App extends Component {
 
   render() {
     const { isAuthenticated } = this.props.auth;
-alert(isAuthenticated());
+
     return (
       <div>
         <Navbar fluid>
@@ -25,6 +25,13 @@ alert(isAuthenticated());
             <Navbar.Brand>
               <a href="#">Auth0 - React</a>
             </Navbar.Brand>
+            <Button
+              bsStyle="primary"
+              className="btn-margin"
+              onClick={this.goTo.bind(this, 'home')}
+            >
+              Home
+            </Button>
             {
               !isAuthenticated() && (
                   <Button
