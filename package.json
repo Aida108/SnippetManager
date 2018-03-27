@@ -3,16 +3,21 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@octokit/rest": "^15.2.5",
     "auth0-js": "^9.4.1",
     "axios": "^0.18.0",
+    "create-react-class": "^15.6.3",
+    "gists": "^1.0.1",
     "react": "^16.2.0",
     "react-bootstrap": "^0.32.1",
     "react-dom": "^16.2.0",
+    "react-fixed-column-table": "^0.3.0",
     "react-github-login": "^1.0.3",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
     "react-scripts": "1.1.1",
-    "routes-js": "^0.1.8"
+    "routes-js": "^0.1.8",
+    "super-react-gist": "^1.0.1"
   },
   "scripts": {
     "start": "react-scripts start",

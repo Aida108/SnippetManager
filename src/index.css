@@ -3,3 +3,24 @@ body {
   padding: 0;
   font-family: sans-serif;
 }
+
+.col-fixed-340{
+    width:340px;
+    position:fixed;
+    height:100%;
+    z-index:1;
+}
+
+.col-fixed-160{
+    margin-left:240px;
+    width:160px;
+    background:blue;
+    position:fixed;
+    height:100%;
+    z-index:1;
+}
+
+.col-offset-400{
+    padding-left:415px;
+    z-index:0;
+}
