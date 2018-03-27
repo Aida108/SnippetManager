@@ -41,9 +41,7 @@ class Home extends Component {
   render() {
   const { isAuthenticated } = this.props.auth;
 console.log(this.state.gists)
-{this.state.gists.map(gist =>
-Object.keys(gist).map(function(k) { console.log(k); return  })
-)}
+
     return (
 
       <div className="container">
@@ -71,13 +69,21 @@ Object.keys(gist).map(function(k) { console.log(k); return  })
 
              <div className="container">
                  <div className="row">
-                     <div className="col-fixed-340">a</div>
-                     <div className="col-md-12 col-offset-400">
-
-                         <div className="row">
+                     <div className="col-fixed-340">
+                     <label>List of { localStorage.getItem('user_nick_name')} snippets</label>
                          <ul>
-
-                                          </ul>
+                         {
+                           this.state.gists.map(gist =>
+                             Object.entries(gist.files).map(function([k,v]) {
+                              return <div id={gist.files[k].raw_url}>
+                                          {gist.files[k].filename}
+                                     </div>
+                            })
+                         )}
+                        </ul>
+                    </div>
+                     <div className="col-md-12 col-offset-400">
+                         <div className="row">
                          </div>
                      </div>
                  </div>
