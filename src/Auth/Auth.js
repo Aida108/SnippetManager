@@ -9,7 +9,8 @@ export default class Auth {
     redirectUri: AUTH_CONFIG.callbackUrl,
     audience: `https://${AUTH_CONFIG.domain}/userinfo`,
     responseType: 'token id_token',
-    scope: 'openid profile'
+    scope: 'openid profile email phone '
+
   });
   userProfile;
   constructor() {
@@ -18,6 +19,7 @@ export default class Auth {
     this.handleAuthentication = this.handleAuthentication.bind(this);
     this.isAuthenticated = this.isAuthenticated.bind(this);
     this.getAccessToken = this.getAccessToken.bind(this);
+    this.getProfile = this.getProfile.bind(this);
   }
 
   login() {
@@ -25,10 +27,17 @@ export default class Auth {
   }
 
   handleAuthentication() {
+
+
     this.auth0.parseHash((err, authResult) => {
       if (authResult && authResult.accessToken && authResult.idToken) {
+
         this.setSession(authResult);
+        this.auth0.client.userInfo(authResult.accessToken, function(err, user){
+              localStorage.setItem('user', JSON.stringify(user));
+        });
         history.replace('/home');
+
       } else if (err) {
         history.replace('/home');
         console.log(err);
@@ -37,13 +46,15 @@ export default class Auth {
     });
   }
 
-  setSession(authResult) {
+  setSession(authResult, ) {
     // Set the time that the access token will expire at
     let expiresAt = JSON.stringify((authResult.expiresIn * 1000) + new Date().getTime());
     localStorage.setItem('access_token', authResult.accessToken);
     localStorage.setItem('id_token', authResult.idToken);
     localStorage.setItem('expires_at', expiresAt);
     localStorage.setItem('user_nick_name', authResult.idTokenPayload.nickname);
+
+    console.log(JSON.stringify(localStorage.getItem('user')));
     // navigate to the home route
     history.replace('/home');
   }
@@ -55,6 +66,19 @@ export default class Auth {
     }
     return accessToken;
   }
+
+
+  getProfile(cb) {
+      let accessToken = this.getAccessToken();
+      this.auth0.client.userInfo(accessToken, (err, profile) => {
+
+        if (profile) {
+          console.log(profile);
+          this.userProfile = profile;
+        }
+        cb(err, profile);
+      });
+    }
 
   logout() {
     // Clear access token and ID token from local storage

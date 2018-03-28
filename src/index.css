@@ -4,23 +4,16 @@ body {
   font-family: sans-serif;
 }
 
-.col-fixed-340{
-    width:340px;
-    position:fixed;
-    height:100%;
-    z-index:1;
+.left {
+    overflow: hidden;
+    min-height: 50px;
+    border: 2px dashed #f0f;
 }
 
-.col-fixed-160{
-    margin-left:240px;
-    width:160px;
-    background:blue;
-    position:fixed;
-    height:100%;
-    z-index:1;
-}
-
-.col-offset-400{
-    padding-left:415px;
-    z-index:0;
+.right {
+    float: left;
+    width: 680px;
+    min-height: 50px;
+    margin-left: 10px;
+    border: 2px dashed #00f;
 }

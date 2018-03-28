@@ -1,16 +1,34 @@
 import React, { Component } from 'react';
 import { Navbar, Button } from 'react-bootstrap';
 import axios from 'axios';
-
+import { AUTH_CONFIG } from '../Auth/auth0-variables';
 const API_URL = 'https://api.github.com/users/';
 
 class Home extends Component {
+
+  componentWillMount() {
+   this.setState({ profile: {} });
+   const { userProfile, getProfile } = this.props.auth;
+   if (!userProfile) {
+     getProfile((err, profile) => {
+       this.setState({ profile });
+     });
+   } else {
+     this.setState({ profile: userProfile });
+   }
+ }
+
   constructor(){
     super();
     this.state = {
                 gists : []
             }
+      this.createNewGist = this.createNewGist.bind(this);
+    this.CommitNewGist = this.CommitNewGist.bind(this);
+
+
   }
+
 
   login() {
     this.props.auth.login();
@@ -24,6 +42,51 @@ class Home extends Component {
     this.props.auth.logout();
   }
 
+  createNewGist(opts) {
+     const { getAccessToken } = this.props.auth;
+
+
+
+
+
+
+  fetch('https://api.github.com'+'/gists', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'Authorization': 'bearer-' + `${getAccessToken()}`,
+    },
+    body: JSON.stringify(opts)
+  }).then(function(response) {
+    return response.json();
+  }).then(function(myJson) {
+    console.log(myJson);
+  });
+}
+
+  CommitNewGist(e) {
+    e.preventDefault();
+
+      console.log(localStorage.getItem('user'));
+  var content = document.getElementById("snippets_editor").value;
+  var name=document.getElementById("snippets_name").value;
+  if (content) {
+    var opts={
+      description: document.getElementById("snippet_description").value,
+      public: true,
+      files: {
+        'test.js': {
+          content: content
+        }
+      },
+        user: localStorage.getItem('user')
+    }
+    this.createNewGist(opts);
+  } else {
+    alert('Please enter in content to POST to a new Gist.');
+  }
+}
+
   componentDidMount() {
      const { getAccessToken } = this.props.auth;
      fetch(API_URL +  localStorage.getItem('user_nick_name') + '/gists', {
@@ -35,12 +98,13 @@ class Home extends Component {
  })
                   .then(response => response.json())
                   .then(gists => this.setState({ gists }))
+
           }
 
 
   render() {
   const { isAuthenticated } = this.props.auth;
-console.log(this.state.gists)
+ const { profile } = this.state;
 
     return (
 
@@ -68,25 +132,41 @@ console.log(this.state.gists)
             {/*two columns in main part of the page */}
 
              <div className="container">
-                 <div className="row">
-                     <div className="col-fixed-340">
-                     <label>List of { localStorage.getItem('user_nick_name')} snippets</label>
-                         <ul>
-                         {
-                           this.state.gists.map(gist =>
-                             Object.entries(gist.files).map(function([k,v]) {
-                              return <div id={gist.files[k].raw_url}>
-                                          {gist.files[k].filename}
-                                     </div>
-                            })
-                         )}
-                        </ul>
-                    </div>
-                     <div className="col-md-12 col-offset-400">
-                         <div className="row">
-                         </div>
-                     </div>
-                 </div>
+             <div className="right">
+             <label>List of { localStorage.getItem('user_nick_name')} snippets</label>
+                 <ul>
+                 {
+                   this.state.gists.map(gist =>
+                     Object.entries(gist.files).map(function([k,v]) {
+                      return <div id={gist.files[k].raw_url}>
+                                  {gist.files[k].filename}
+                             </div>
+                    })
+                 )}
+                </ul>
+             </div>
+             <div className="left">
+               <div className="snippets_buttons">
+               <Button
+                 id="createNewSnippetBtn"
+                 bsStyle="primary"
+                 Type="submit"
+                 className="btn-margin"
+                 onClick={this.CommitNewGist.bind(this)} >
+                 Create Snippet
+               </Button>
+               </div>
+               <div>
+             <textarea id="snippet_description" rows="10" cols="80"/>
+             </div>
+              <div> <textarea id="snippets_name" rows="10" cols="80"/>
+              </div>
+              <div>
+  <textarea id="snippets_editor" rows="30" cols="80"/>
+  </div>
+             </div>
+
+
              </div>
              </div>
             )
