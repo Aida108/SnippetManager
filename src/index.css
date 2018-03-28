@@ -1,19 +1,1 @@
-body {
-  margin: 0;
-  padding: 0;
-  font-family: sans-serif;
-}
 
-.left {
-    overflow: hidden;
-    min-height: 50px;
-    border: 2px dashed #f0f;
-}
-
-.right {
-    float: left;
-    width: 680px;
-    min-height: 50px;
-    margin-left: 10px;
-    border: 2px dashed #00f;
-}

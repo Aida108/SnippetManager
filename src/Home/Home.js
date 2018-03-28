@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Navbar, Button } from 'react-bootstrap';
+import '../Css/Home.css';
 import axios from 'axios';
 import { AUTH_CONFIG } from '../Auth/auth0-variables';
 const API_URL = 'https://api.github.com/users/';
@@ -104,48 +105,49 @@ class Home extends Component {
 
   render() {
   const { isAuthenticated } = this.props.auth;
- const { profile } = this.state;
+  const { profile } = this.state;
 
     return (
-
-      <div className="container">
+      <div className="home_container">
         {
           isAuthenticated() && (
             <div>
              {/*header of the Home page */}
-             <div className="header">
-                <h3>Welcome { localStorage.getItem('user_nick_name')} !</h3>
-                <Button
-                  id="qsLogoutBtn"
-                  bsStyle="primary"
-                  className="btn-margin"
-                  onClick={this.logout.bind(this)} >
-                  Log Out
-                </Button>
-                <span className="app__description">
-                   Snippets Manager application will make your life easier!
-                </span>
-                <span className="app_about">
-                  Application is able to manage user’s snippets stored on GitHub as gists.
-                </span>
+<div className="home_header">
+             <div className="rightColumn_header">
+               <div className="btn_login_home ">
+                     <a href="#" class="btn btn-sm animated-button sandy-three" onClick={this.logout.bind(this)}>Log Out</a>
+               </div>
+             </div>
+             <div className="leftColumn_header">
+               <div className="welcome_header">
+                  <h3>Welcome { localStorage.getItem('user_nick_name')} !</h3>
+                  <span className="home_about">
+                    Snippets Manager allows you to manage your snippets stored on GitHub as gists.
+                  </span>
+              </div>
+             </div>
              </div>
             {/*two columns in main part of the page */}
 
-             <div className="container">
-             <div className="right">
+             <div>
+             <div className="rightColumn">
              <label>List of { localStorage.getItem('user_nick_name')} snippets</label>
-                 <ul>
+                 <table>
+                 <tbody>
+                
                  {
                    this.state.gists.map(gist =>
                      Object.entries(gist.files).map(function([k,v]) {
-                      return <div id={gist.files[k].raw_url}>
-                                  {gist.files[k].filename}
-                             </div>
+                      return <tr id={gist.files[k].raw_url}>
+                                  <td>{gist.files[k].filename}</td>
+                             </tr>
                     })
                  )}
-                </ul>
+                 </tbody>
+                </table>
              </div>
-             <div className="left">
+             <div className="leftColumn">
                <div className="snippets_buttons">
                <Button
                  id="createNewSnippetBtn"

@@ -26,7 +26,7 @@ class App extends Component {
           </div>
         </div>
         <div className="login_message_text">
-          <span>Makes your life easeier!</span>
+          <span>Makes your life easier!</span>
         </div>
             {
                 !isAuthenticated() && (
@@ -37,13 +37,9 @@ class App extends Component {
             }
             {
                 isAuthenticated() && (
-                    <Button
-                      id="qsLogoutBtn"
-                      bsStyle="primary"
-                      className="btn-margin"
-                      onClick={this.logout.bind(this)}>
-                      Log Out
-                    </Button>
+                  <div className="btn_login">
+                    <a href="#" class="btn btn-sm animated-button sandy-three" onClick={this.logout.bind(this)}>Log Out</a>
+                  </div>
                   )
             }
       </div>
