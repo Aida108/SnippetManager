@@ -77,14 +77,8 @@ class Home extends Component {
  }
 
 
-
-
- getSpecificGist(){
-
- }
-
-  render() {
-  const { isAuthenticated } = this.props.auth;
+getGists()
+{setTimeout(function() {
   console.log(localStorage.getItem('githubApi_token'))
   fetch(API_URL + 'gists', {
     method: 'GET',
@@ -93,21 +87,31 @@ class Home extends Component {
         }
    }).then(response => response.json())
      .then(gists => this.setState({ gists }))
-  let tagList;
-  console.log(this.state.gists.length)
-  if(this.state.gists !=[])
-  {
-    tagList = (this.state.gists.map(gist =>
-    Object.entries(gist.files).map(function([k,v]) {
-     return <tr id={gist.files[k].raw_url} >
-       <td>{gist.files[k].filename}</td>
-    </tr>
-    }.bind(this))))
-}
-else {
-  tagList = (<div>No snippet found!</div>)
+}.bind(this), 1000)
+
 }
 
+ getSpecificGist(){
+
+ }
+
+  render() {
+  const { isAuthenticated } = this.props.auth;
+    let tagList;
+
+this.getGists();
+if(this.state.gists !=[])
+{
+  tagList = (this.state.gists.map(gist =>
+  Object.entries(gist.files).map(function([k,v]) {
+   return <tr id={gist.files[k].raw_url} >
+     <td>{gist.files[k].filename}</td>
+  </tr>
+  }.bind(this))))
+}
+else {
+tagList = (<div>No snippet found!</div>)
+}
     return (
       <div className="home_container">
         {

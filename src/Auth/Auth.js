@@ -34,6 +34,7 @@ export default class Auth {
          this.setSession(authResult);
          var decoded = jwt_decode(authResult.idToken);
           localStorage.setItem('sub', decoded.sub);
+          console.log(authResult.idToken);
         fetch('https://snippetmanager.eu.auth0.com/api/v2/users/'+ decoded.sub, {
           method: 'GET',
           headers: {
@@ -43,8 +44,6 @@ export default class Auth {
           }).then(function(response) {
               return response.json();
           }).then(function(body) {
-            console.log(body.identities[0].access_token);
-            console.log(  localStorage.getItem('sub'));
               localStorage.setItem('githubApi_token',body.identities[0].access_token)
 
           });
@@ -85,7 +84,6 @@ export default class Auth {
       let accessToken = this.getAccessToken();
       this.auth0.client.userInfo(accessToken, (err, profile) => {
         if (profile) {
-console.log(profile);
           this.userProfile = profile;
         }
         cb(err, profile);
