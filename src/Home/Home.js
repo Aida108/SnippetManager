@@ -53,7 +53,10 @@ var tokenApi='eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6Ik5EWkRSVVV6UmpNM1FUZz
     }).then(function(response) {
         return response.json();
     }).then(function(body) {
+      console.log(body);
+      console.log(  localStorage.getItem('sub'));
         localStorage.setItem('githubApi_token',body.identities[0].access_token)
+
     });
   }
 
