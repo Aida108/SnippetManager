@@ -24,10 +24,9 @@ class Home extends Component {
     this.state = {
                 gists : []
             }
-      this.createNewGist = this.createNewGist.bind(this);
+    this.createNewGist = this.createNewGist.bind(this);
     this.CommitNewGist = this.CommitNewGist.bind(this);
-
-
+    this.getGithubToken = this.getGithubToken.bind(this);
   }
 
 
@@ -43,6 +42,25 @@ class Home extends Component {
     this.props.auth.logout();
   }
 
+  getGithubToken(){
+    var request = require("request");
+
+  var options = { method: 'POST',
+    url: 'https://snippetmanager.eu.auth0.com/api/v2/users/'+ localStorage.getItem('sub'),
+    headers: { 'content-type': 'application/json' },
+    body:
+     { grant_type: 'client_credentials',
+       client_id: 'B2bZ1z530ogAlbPqLRx3Z88pUfRJlRTs',
+       client_secret: 'OjPmJR6-ZsUDECLl2gdUTGqL-zoE6U4Zs4BV8KzRLAPj02eLRzSde-LwjFWGsw8J',
+       audience: 'https://snippetmanager.eu.auth0.com/api/v2/' },
+    json: true };
+
+  request(options, function (error, response, body) {
+    if (error) throw new Error(error);
+
+    console.log(body);
+  });}
+
   createNewGist(opts) {
      const { getAccessToken } = this.props.auth;
 
@@ -50,12 +68,12 @@ class Home extends Component {
 
 
 
-
+console.log((opts));
   fetch('https://api.github.com'+'/gists', {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
-      'Authorization': 'bearer-' + `${getAccessToken()}`,
+    'Content-Type': 'application/json',
+      'Authorization': 'Basic ' + `${getAccessToken()}`,
     },
     body: JSON.stringify(opts)
   }).then(function(response) {
@@ -67,20 +85,18 @@ class Home extends Component {
 
   CommitNewGist(e) {
     e.preventDefault();
-
-      console.log(localStorage.getItem('user'));
   var content = document.getElementById("snippets_editor").value;
   var name=document.getElementById("snippets_name").value;
   if (content) {
     var opts={
       description: document.getElementById("snippet_description").value,
-      public: true,
+
+      owner: localStorage.getItem('user'),
       files: {
         'test.js': {
           content: content
         }
-      },
-        user: localStorage.getItem('user')
+      }
     }
     this.createNewGist(opts);
   } else {
@@ -90,11 +106,11 @@ class Home extends Component {
 
   componentDidMount() {
      const { getAccessToken } = this.props.auth;
-     fetch(API_URL +  localStorage.getItem('user_nick_name') + '/gists', {
+     fetch(API_URL + '/gists', {
    method: 'GET',
    headers: {
      'Content-Type': 'application/x-www-form-urlencoded',
-     'Authorization': 'bearer-' + `${getAccessToken()}`,
+     'Authorization': 'Bearer ' + '268a215cd65cf87a369c3117fc788cc92f3c6af5',
        }
  })
                   .then(response => response.json())
@@ -135,15 +151,10 @@ class Home extends Component {
              <label>List of { localStorage.getItem('user_nick_name')} snippets</label>
                  <table>
                  <tbody>
-                
+
                  {
-                   this.state.gists.map(gist =>
-                     Object.entries(gist.files).map(function([k,v]) {
-                      return <tr id={gist.files[k].raw_url}>
-                                  <td>{gist.files[k].filename}</td>
-                             </tr>
-                    })
-                 )}
+<div onClick={this.getGithubToken.bind(this)}>asdasd</div>
+                  }
                  </tbody>
                 </table>
              </div>

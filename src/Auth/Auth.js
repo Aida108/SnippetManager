@@ -1,6 +1,8 @@
 import history from '../history';
 import auth0 from 'auth0-js';
 import { AUTH_CONFIG } from './auth0-variables';
+import jwt_decode from 'jwt-decode';
+import * as qs from 'query-string';
 
 export default class Auth {
   auth0 = new auth0.WebAuth({
@@ -8,8 +10,8 @@ export default class Auth {
     clientID: AUTH_CONFIG.clientId,
     redirectUri: AUTH_CONFIG.callbackUrl,
     audience: `https://${AUTH_CONFIG.domain}/userinfo`,
-    responseType: 'token id_token',
-    scope: 'openid profile email phone '
+    responseType: 'code',
+    scope: 'read'
 
   });
   userProfile;
@@ -27,17 +29,29 @@ export default class Auth {
   }
 
   handleAuthentication() {
+const parsed = qs.parse(window.location.search);
+localStorage.setItem('code', parsed.code);
 
 
+fetch('https://snippetmanager.eu.auth0.com/oauth/token?client_id=B2bZ1z530ogAlbPqLRx3Z88pUfRJlRTs&client_secret=OjPmJR6-ZsUDECLl2gdUTGqL-zoE6U4Zs4BV8KzRLAPj02eLRzSde-LwjFWGsw8J&grant_typ=authorization_code&code='+parsed.code+'redirect_uri=https://fathomless-hollows-69797.herokuapp.com/callback', {
+  method: 'POST',
+  headers: {
+  'Content-Type': 'application/json'
+  }
+}).then(function(response) {
+  return response.json();
+}).then(function(myJson) {
+  console.log(myJson);
+});
     this.auth0.parseHash((err, authResult) => {
       if (authResult && authResult.accessToken && authResult.idToken) {
-
         this.setSession(authResult);
+        var decoded = jwt_decode(authResult.idToken);
+        localStorage.setItem('sub', decoded.sub);
         this.auth0.client.userInfo(authResult.accessToken, function(err, user){
-              localStorage.setItem('user', JSON.stringify(user));
+              localStorage.setItem('user', user);
         });
         history.replace('/home');
-
       } else if (err) {
         history.replace('/home');
         console.log(err);
@@ -53,8 +67,6 @@ export default class Auth {
     localStorage.setItem('id_token', authResult.idToken);
     localStorage.setItem('expires_at', expiresAt);
     localStorage.setItem('user_nick_name', authResult.idTokenPayload.nickname);
-
-    console.log(JSON.stringify(localStorage.getItem('user')));
     // navigate to the home route
     history.replace('/home');
   }
@@ -67,13 +79,11 @@ export default class Auth {
     return accessToken;
   }
 
-
   getProfile(cb) {
       let accessToken = this.getAccessToken();
       this.auth0.client.userInfo(accessToken, (err, profile) => {
-
         if (profile) {
-          console.log(profile);
+
           this.userProfile = profile;
         }
         cb(err, profile);
