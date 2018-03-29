@@ -1,9 +1,7 @@
 
 import React, { Component } from 'react';
-import { Navbar, Button } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import '../Css/Home.css';
-import axios from 'axios';
-import { AUTH_CONFIG } from '../Auth/auth0-variables';
 const API_URL = 'https://api.github.com/';
 
 class Home extends Component {
@@ -37,11 +35,6 @@ class Home extends Component {
   logout() {
     this.props.auth.logout();
   }
-
-  logout() {
-    this.props.auth.logout();
-  }
-
 
   createNewGist(opts) {
   fetch('https://api.github.com'+'/gists', {
@@ -78,8 +71,8 @@ class Home extends Component {
 
 
 getGists()
-{setTimeout(function() {
-  console.log(localStorage.getItem('githubApi_token'))
+{
+  setTimeout(function() {
   fetch(API_URL + 'gists', {
     method: 'GET',
     headers: {
@@ -183,10 +176,5 @@ tagList = (<div>No snippet found!</div>)
     );
   }
 }
-
-
-var createReactClass = require('create-react-class');
-
-
 
 export default Home;
