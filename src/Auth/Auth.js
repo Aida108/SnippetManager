@@ -97,7 +97,6 @@ export default class Auth {
     localStorage.removeItem('expires_at');
 
     this.userProfile = null;
-    alert("xx");
     // navigate to the home route
     history.replace('/home');
   }
