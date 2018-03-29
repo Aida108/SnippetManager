@@ -11,8 +11,9 @@ body {
 .leftColumn {
     overflow: hidden;
     min-height: 50px;
-    background-color:white;
-    border: 2px dashed #f0f;
+    padding-left: 30px;
+    background-color: #474747 ;
+  background-image: url("https://www.transparenttextures.com/patterns/egg-shell.png");
 }
 
 .rightColumn {
@@ -116,4 +117,55 @@ tbody:hover > tr:hover td {
  text-shadow:none;
   color:#2d2d2d;
   opacity:1.0;
+}
+
+.label_listsnippets{
+  font-size: 20px;
+  margin-left: 50px;
+  margin-top: 20px;
+}
+
+.snippets_table{
+  margin-top:20px;
+}
+
+.textarea_container{
+  display: inline-block;
+  padding-rigth: 20px;
+  width:450px;
+}
+
+.textarea_container_description{
+  display: inline-block;
+
+}
+
+.label_snippet_description,
+.label_snippet_content
+{
+  display: block;
+  font-size: 20px;
+}
+
+.label_snippet_name{
+  font-size: 20px;
+}
+
+.textarea_container_content{
+  display: inline-block;
+vertical-align: top;
+
+}
+
+.label_snippet_description{
+  margin-top:15px;
+}
+
+.btn_create_snippet a.animated-button.sandy-three{
+  margin: 0;
+  width:200px;
+}
+
+.create_snippet_div{
+  margin-top:30px;
 }

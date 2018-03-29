@@ -3,7 +3,7 @@ import { Navbar, Button } from 'react-bootstrap';
 import '../Css/Home.css';
 import axios from 'axios';
 import { AUTH_CONFIG } from '../Auth/auth0-variables';
-const API_URL = 'https://api.github.com/users/';
+const API_URL = 'https://api.github.com/';
 
 class Home extends Component {
 
@@ -21,12 +21,11 @@ class Home extends Component {
 
   constructor(){
     super();
-    this.state = {
-                gists : []
-            }
+    this.state = {  gists : [] }
     this.createNewGist = this.createNewGist.bind(this);
     this.CommitNewGist = this.CommitNewGist.bind(this);
     this.getGithubToken = this.getGithubToken.bind(this);
+    this.getSpecificGist = this.getSpecificGist.bind(this);
   }
 
 
@@ -43,85 +42,85 @@ class Home extends Component {
   }
 
   getGithubToken(){
-    var request = require("request");
+var tokenApi='eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6Ik5EWkRSVVV6UmpNM1FUZzNNamMyUWtaQk5rRkVNVVkyUmpjd05qbEVOekpCTnpFelJETTNSZyJ9.eyJpc3MiOiJodHRwczovL3NuaXBwZXRtYW5hZ2VyLmV1LmF1dGgwLmNvbS8iLCJzdWIiOiJqY29LMjFMNFR6eE41SGtpbWJqc2pOZ0hHa2dUNVlaN0BjbGllbnRzIiwiYXVkIjoiaHR0cHM6Ly9zbmlwcGV0bWFuYWdlci5ldS5hdXRoMC5jb20vYXBpL3YyLyIsImlhdCI6MTUyMjI4NTk3NCwiZXhwIjoxNTIyMzcyMzc0LCJhenAiOiJqY29LMjFMNFR6eE41SGtpbWJqc2pOZ0hHa2dUNVlaNyIsInNjb3BlIjoicmVhZDpjbGllbnRfZ3JhbnRzIGNyZWF0ZTpjbGllbnRfZ3JhbnRzIGRlbGV0ZTpjbGllbnRfZ3JhbnRzIHVwZGF0ZTpjbGllbnRfZ3JhbnRzIHJlYWQ6dXNlcnMgdXBkYXRlOnVzZXJzIGRlbGV0ZTp1c2VycyBjcmVhdGU6dXNlcnMgcmVhZDp1c2Vyc19hcHBfbWV0YWRhdGEgdXBkYXRlOnVzZXJzX2FwcF9tZXRhZGF0YSBkZWxldGU6dXNlcnNfYXBwX21ldGFkYXRhIGNyZWF0ZTp1c2Vyc19hcHBfbWV0YWRhdGEgY3JlYXRlOnVzZXJfdGlja2V0cyByZWFkOmNsaWVudHMgdXBkYXRlOmNsaWVudHMgZGVsZXRlOmNsaWVudHMgY3JlYXRlOmNsaWVudHMgcmVhZDpjbGllbnRfa2V5cyB1cGRhdGU6Y2xpZW50X2tleXMgZGVsZXRlOmNsaWVudF9rZXlzIGNyZWF0ZTpjbGllbnRfa2V5cyByZWFkOmNvbm5lY3Rpb25zIHVwZGF0ZTpjb25uZWN0aW9ucyBkZWxldGU6Y29ubmVjdGlvbnMgY3JlYXRlOmNvbm5lY3Rpb25zIHJlYWQ6cmVzb3VyY2Vfc2VydmVycyB1cGRhdGU6cmVzb3VyY2Vfc2VydmVycyBkZWxldGU6cmVzb3VyY2Vfc2VydmVycyBjcmVhdGU6cmVzb3VyY2Vfc2VydmVycyByZWFkOmRldmljZV9jcmVkZW50aWFscyB1cGRhdGU6ZGV2aWNlX2NyZWRlbnRpYWxzIGRlbGV0ZTpkZXZpY2VfY3JlZGVudGlhbHMgY3JlYXRlOmRldmljZV9jcmVkZW50aWFscyByZWFkOnJ1bGVzIHVwZGF0ZTpydWxlcyBkZWxldGU6cnVsZXMgY3JlYXRlOnJ1bGVzIHJlYWQ6cnVsZXNfY29uZmlncyB1cGRhdGU6cnVsZXNfY29uZmlncyBkZWxldGU6cnVsZXNfY29uZmlncyByZWFkOmVtYWlsX3Byb3ZpZGVyIHVwZGF0ZTplbWFpbF9wcm92aWRlciBkZWxldGU6ZW1haWxfcHJvdmlkZXIgY3JlYXRlOmVtYWlsX3Byb3ZpZGVyIGJsYWNrbGlzdDp0b2tlbnMgcmVhZDpzdGF0cyByZWFkOnRlbmFudF9zZXR0aW5ncyB1cGRhdGU6dGVuYW50X3NldHRpbmdzIHJlYWQ6bG9ncyByZWFkOnNoaWVsZHMgY3JlYXRlOnNoaWVsZHMgZGVsZXRlOnNoaWVsZHMgdXBkYXRlOnRyaWdnZXJzIHJlYWQ6dHJpZ2dlcnMgcmVhZDpncmFudHMgZGVsZXRlOmdyYW50cyByZWFkOmd1YXJkaWFuX2ZhY3RvcnMgdXBkYXRlOmd1YXJkaWFuX2ZhY3RvcnMgcmVhZDpndWFyZGlhbl9lbnJvbGxtZW50cyBkZWxldGU6Z3VhcmRpYW5fZW5yb2xsbWVudHMgY3JlYXRlOmd1YXJkaWFuX2Vucm9sbG1lbnRfdGlja2V0cyByZWFkOnVzZXJfaWRwX3Rva2VucyBjcmVhdGU6cGFzc3dvcmRzX2NoZWNraW5nX2pvYiBkZWxldGU6cGFzc3dvcmRzX2NoZWNraW5nX2pvYiByZWFkOmN1c3RvbV9kb21haW5zIGRlbGV0ZTpjdXN0b21fZG9tYWlucyBjcmVhdGU6Y3VzdG9tX2RvbWFpbnMgcmVhZDplbWFpbF90ZW1wbGF0ZXMgY3JlYXRlOmVtYWlsX3RlbXBsYXRlcyB1cGRhdGU6ZW1haWxfdGVtcGxhdGVzIiwiZ3R5IjoiY2xpZW50LWNyZWRlbnRpYWxzIn0.cvePGIjkWIGziWwf-4WiZxisg2A1AFZPTfrzTDH-YudsQ_0xThNvgqvS14TNWoNuYvi2Ufxd3EaBq4knM1a4HylHdak0q0RC3ZMv8O4GtQ8DVdO7lCFS4HGbpmDTNdfwLU7XXk-21lgLG_3HXr-NZrxsCf9mWPD7wWx1xPr2trJ4SYnDzbamUHHNZy-wmRqaGOWSGLz0YWauTB_FVVumHrJCBsXARhZjmQTN2slq00WlBNI51R7kwLFy0gW-Klr_NrH-hrr62jD4WRksqPY2ckvSJ5WYDj5Op5Mwr_2h-545ZAtXr1fO-IkFQmVNEUYAn5Y2l6XPCi0m6Jty9PYN2g';
 
-  var options = { method: 'POST',
-    url: 'https://snippetmanager.eu.auth0.com/api/v2/users/'+ localStorage.getItem('sub'),
-    headers: { 'content-type': 'application/json' },
-    body:
-     { grant_type: 'client_credentials',
-       client_id: 'B2bZ1z530ogAlbPqLRx3Z88pUfRJlRTs',
-       client_secret: 'OjPmJR6-ZsUDECLl2gdUTGqL-zoE6U4Zs4BV8KzRLAPj02eLRzSde-LwjFWGsw8J',
-       audience: 'https://snippetmanager.eu.auth0.com/api/v2/' },
-    json: true };
-
-  request(options, function (error, response, body) {
-    if (error) throw new Error(error);
-
-    console.log(body);
-  });}
+  fetch('https://snippetmanager.eu.auth0.com/api/v2/users/'+ localStorage.getItem('sub'), {
+    method: 'GET',
+    headers: {
+    'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + tokenApi,
+    }
+    }).then(function(response) {
+        return response.json();
+    }).then(function(body) {
+        localStorage.setItem('githubApi_token',body.identities[0].access_token)
+    });
+  }
 
   createNewGist(opts) {
-     const { getAccessToken } = this.props.auth;
-
-
-
-
-
-console.log((opts));
   fetch('https://api.github.com'+'/gists', {
     method: 'POST',
     headers: {
     'Content-Type': 'application/json',
-      'Authorization': 'Basic ' + `${getAccessToken()}`,
+      'Authorization': 'Bearer ' + localStorage.getItem('githubApi_token'),
     },
     body: JSON.stringify(opts)
-  }).then(function(response) {
-    return response.json();
-  }).then(function(myJson) {
-    console.log(myJson);
-  });
-}
+    }).then(function(response) {
+    alert("New Snippet created!")
+    });
+  }
 
   CommitNewGist(e) {
-    e.preventDefault();
+  e.preventDefault();
   var content = document.getElementById("snippets_editor").value;
-  var name=document.getElementById("snippets_name").value;
+  var name= document.getElementById("snippets_name").value;
   if (content) {
-    var opts={
+    var opts= {
       description: document.getElementById("snippet_description").value,
-
       owner: localStorage.getItem('user'),
       files: {
-        'test.js': {
+      [name] : {
           content: content
         }
       }
     }
     this.createNewGist(opts);
-  } else {
-    alert('Please enter in content to POST to a new Gist.');
+    } else {
+      alert('Please enter in content to POST to a new Gist.');
   }
-}
+ }
 
   componentDidMount() {
-     const { getAccessToken } = this.props.auth;
-     fetch(API_URL + '/gists', {
-   method: 'GET',
-   headers: {
-     'Content-Type': 'application/x-www-form-urlencoded',
-     'Authorization': 'Bearer ' + '268a215cd65cf87a369c3117fc788cc92f3c6af5',
-       }
- })
-                  .then(response => response.json())
-                  .then(gists => this.setState({ gists }))
-
+    this.getGithubToken();
+    fetch(API_URL + 'gists', {
+      method: 'GET',
+      headers: {
+        'Authorization': 'Bearer ' +  localStorage.getItem('githubApi_token'),
           }
+     }).then(response => response.json())
+       .then(gists => this.setState({ gists }))
+  }
 
+
+ getSpecificGist(){
+
+ }
 
   render() {
   const { isAuthenticated } = this.props.auth;
-  const { profile } = this.state;
+  let tagList;
+  if(this.state.gists.length !=0)
+  {
+    tagList = (this.state.gists.map(gist =>
+    Object.entries(gist.files).map(function([k,v]) {
+     return <tr id={gist.files[k].raw_url} >
+       <td>{gist.files[k].filename}</td>
+    </tr>
+    }.bind(this))))
+}
+else {
+  tagList = (<div>No snippet found!</div>)
+}
 
     return (
       <div className="home_container">
@@ -129,7 +128,7 @@ console.log((opts));
           isAuthenticated() && (
             <div>
              {/*header of the Home page */}
-<div className="home_header">
+          <div className="home_header">
              <div className="rightColumn_header">
                <div className="btn_login_home ">
                      <a href="#" class="btn btn-sm animated-button sandy-three" onClick={this.logout.bind(this)}>Log Out</a>
@@ -143,45 +142,37 @@ console.log((opts));
                   </span>
               </div>
              </div>
-             </div>
+         </div>
             {/*two columns in main part of the page */}
 
              <div>
              <div className="rightColumn">
-             <label>List of { localStorage.getItem('user_nick_name')} snippets</label>
-                 <table>
-                 <tbody>
-
-                 {
-<div onClick={this.getGithubToken.bind(this)}>asdasd</div>
-                  }
-                 </tbody>
-                </table>
+                <label className="label_listsnippets">List of { localStorage.getItem('user_nick_name')} snippets</label>
+             <table className="snippets_table">
+               <tbody>{tagList}</tbody>
+              </table>
              </div>
              <div className="leftColumn">
                <div className="snippets_buttons">
-               <Button
-                 id="createNewSnippetBtn"
-                 bsStyle="primary"
-                 Type="submit"
-                 className="btn-margin"
-                 onClick={this.CommitNewGist.bind(this)} >
-                 Create Snippet
-               </Button>
+                   <div className="btn_create_snippet ">
+                         <a href="#" class="btn btn-sm animated-button sandy-three" onClick={this.CommitNewGist.bind(this)}>Create Snippet</a>
+                   </div>
                </div>
-               <div>
-             <textarea id="snippet_description" rows="10" cols="80"/>
+               <div className="create_snippet_div">
+               <div className="textarea_container">
+                  <label className="label_snippet_name">Snippet Name</label>
+                  <textarea id="snippets_name" rows="1" cols="60"/>
+                 <label className="label_snippet_description">Snippet Description</label>
+                 <textarea id="snippet_description" rows="9" cols="60"/>
+               </div>
+               <div className='textarea_container_content'>
+                  <label className="label_snippet_content">Snippet Content</label>
+                  <textarea id="snippets_editor" rows="13" cols="60"/>
+               </div>
+               </div>
              </div>
-              <div> <textarea id="snippets_name" rows="10" cols="80"/>
-              </div>
-              <div>
-  <textarea id="snippets_editor" rows="30" cols="80"/>
-  </div>
-             </div>
-
-
-             </div>
-             </div>
+          </div>
+     </div>
             )
         }
         {
