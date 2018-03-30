@@ -27,25 +27,43 @@ export default class Auth {
   }
 
   handleAuthentication() {
-    var tokenApi='eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6Ik5EWkRSVVV6UmpNM1FUZzNNamMyUWtaQk5rRkVNVVkyUmpjd05qbEVOekpCTnpFelJETTNSZyJ9.eyJpc3MiOiJodHRwczovL3NuaXBwZXRtYW5hZ2VyLmV1LmF1dGgwLmNvbS8iLCJzdWIiOiJqY29LMjFMNFR6eE41SGtpbWJqc2pOZ0hHa2dUNVlaN0BjbGllbnRzIiwiYXVkIjoiaHR0cHM6Ly9zbmlwcGV0bWFuYWdlci5ldS5hdXRoMC5jb20vYXBpL3YyLyIsImlhdCI6MTUyMjQxMzQyMCwiZXhwIjoxNTIzMjc3NDIwLCJhenAiOiJqY29LMjFMNFR6eE41SGtpbWJqc2pOZ0hHa2dUNVlaNyIsInNjb3BlIjoicmVhZDpjbGllbnRfZ3JhbnRzIGNyZWF0ZTpjbGllbnRfZ3JhbnRzIGRlbGV0ZTpjbGllbnRfZ3JhbnRzIHVwZGF0ZTpjbGllbnRfZ3JhbnRzIHJlYWQ6dXNlcnMgdXBkYXRlOnVzZXJzIGRlbGV0ZTp1c2VycyBjcmVhdGU6dXNlcnMgcmVhZDp1c2Vyc19hcHBfbWV0YWRhdGEgdXBkYXRlOnVzZXJzX2FwcF9tZXRhZGF0YSBkZWxldGU6dXNlcnNfYXBwX21ldGFkYXRhIGNyZWF0ZTp1c2Vyc19hcHBfbWV0YWRhdGEgY3JlYXRlOnVzZXJfdGlja2V0cyByZWFkOmNsaWVudHMgdXBkYXRlOmNsaWVudHMgZGVsZXRlOmNsaWVudHMgY3JlYXRlOmNsaWVudHMgcmVhZDpjbGllbnRfa2V5cyB1cGRhdGU6Y2xpZW50X2tleXMgZGVsZXRlOmNsaWVudF9rZXlzIGNyZWF0ZTpjbGllbnRfa2V5cyByZWFkOmNvbm5lY3Rpb25zIHVwZGF0ZTpjb25uZWN0aW9ucyBkZWxldGU6Y29ubmVjdGlvbnMgY3JlYXRlOmNvbm5lY3Rpb25zIHJlYWQ6cmVzb3VyY2Vfc2VydmVycyB1cGRhdGU6cmVzb3VyY2Vfc2VydmVycyBkZWxldGU6cmVzb3VyY2Vfc2VydmVycyBjcmVhdGU6cmVzb3VyY2Vfc2VydmVycyByZWFkOmRldmljZV9jcmVkZW50aWFscyB1cGRhdGU6ZGV2aWNlX2NyZWRlbnRpYWxzIGRlbGV0ZTpkZXZpY2VfY3JlZGVudGlhbHMgY3JlYXRlOmRldmljZV9jcmVkZW50aWFscyByZWFkOnJ1bGVzIHVwZGF0ZTpydWxlcyBkZWxldGU6cnVsZXMgY3JlYXRlOnJ1bGVzIHJlYWQ6cnVsZXNfY29uZmlncyB1cGRhdGU6cnVsZXNfY29uZmlncyBkZWxldGU6cnVsZXNfY29uZmlncyByZWFkOmVtYWlsX3Byb3ZpZGVyIHVwZGF0ZTplbWFpbF9wcm92aWRlciBkZWxldGU6ZW1haWxfcHJvdmlkZXIgY3JlYXRlOmVtYWlsX3Byb3ZpZGVyIGJsYWNrbGlzdDp0b2tlbnMgcmVhZDpzdGF0cyByZWFkOnRlbmFudF9zZXR0aW5ncyB1cGRhdGU6dGVuYW50X3NldHRpbmdzIHJlYWQ6bG9ncyByZWFkOnNoaWVsZHMgY3JlYXRlOnNoaWVsZHMgZGVsZXRlOnNoaWVsZHMgdXBkYXRlOnRyaWdnZXJzIHJlYWQ6dHJpZ2dlcnMgcmVhZDpncmFudHMgZGVsZXRlOmdyYW50cyByZWFkOmd1YXJkaWFuX2ZhY3RvcnMgdXBkYXRlOmd1YXJkaWFuX2ZhY3RvcnMgcmVhZDpndWFyZGlhbl9lbnJvbGxtZW50cyBkZWxldGU6Z3VhcmRpYW5fZW5yb2xsbWVudHMgY3JlYXRlOmd1YXJkaWFuX2Vucm9sbG1lbnRfdGlja2V0cyByZWFkOnVzZXJfaWRwX3Rva2VucyBjcmVhdGU6cGFzc3dvcmRzX2NoZWNraW5nX2pvYiBkZWxldGU6cGFzc3dvcmRzX2NoZWNraW5nX2pvYiByZWFkOmN1c3RvbV9kb21haW5zIGRlbGV0ZTpjdXN0b21fZG9tYWlucyBjcmVhdGU6Y3VzdG9tX2RvbWFpbnMgcmVhZDplbWFpbF90ZW1wbGF0ZXMgY3JlYXRlOmVtYWlsX3RlbXBsYXRlcyB1cGRhdGU6ZW1haWxfdGVtcGxhdGVzIiwiZ3R5IjoiY2xpZW50LWNyZWRlbnRpYWxzIn0.iTAvjXMIwXKTdqgn974gQpzYFIIbnAu7qSZvZYZwGoQ83I6zDxtmCzVgdeN9XgLtRk2rooZ45jNG7g53kc_gkX1_N0FZGgaD97Nkux0GGzhDVkVWCXfvzHaoQq-iR_RgqDAH0yWBkcO-kXf9Z3oAoJ4a41s-UQy-ZQvE53h7vAd71vldxf6quebh8yUIfOgBO27b4WmZFz0-EUM29lSbYYpI_CuqV37LprT07fvibBxoIbrmXljJjUd_denrYhHQnCgalWPR3W3Y2ZVAqXJH7FYbjU5Yj_ws-pJNbR7H8h9snsWIUfKmW3SY8sgpw3GdPGaKpVkSA852zLjbgJrxjg'
-    this.auth0.parseHash((err, authResult) => {
+  this.auth0.parseHash((err, authResult) => {
       if (authResult && authResult.accessToken && authResult.idToken) {
          this.setSession(authResult);
          var decoded = jwt_decode(authResult.idToken);
           localStorage.setItem('sub', decoded.sub);
           console.log(authResult.idToken);
-        fetch('https://snippetmanager.eu.auth0.com/api/v2/users/'+ decoded.sub, {
-          method: 'GET',
-          headers: {
-          'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + tokenApi,
-          }
-          }).then(function(response) {
-              return response.json();
-          }).then(function(body) {
-              localStorage.setItem('githubApi_token',body.identities[0].access_token)
+var data =
+{client_id: 'DKQIQKtrUuhPrVyCsOJ0OR4y5s2sm8J1',
+client_secret:'S-GnsMvPaclcn5cXdL8lLYIfy9QUl8oG0EFz6jHUBMAyZe_mQ1utaujLEleex3Hs',
+audience:'https://snippetmanager.eu.auth0.com/api/v2/',
+grant_type:'client_credentials'};
+var oauthToken;
+          fetch('https://snippetmanager.eu.auth0.com/oauth/token', {
+            method: 'POST',
+            headers: {
+            'Content-Type': 'application/json'
+          },
+             body: JSON.stringify(data)
+            }).then(function(response) {
+                return response.json();
+            }).then(function(body) {
+                      console.log(body)
+                console.log(body.access_token)
 
-          });
+fetch('https://snippetmanager.eu.auth0.com/api/v2/users/'+ decoded.sub, {
+  method: 'GET',
+  headers: {
+    'Authorization': 'Bearer ' + body.access_token,
+  }
+  }).then(function(response) {
+      return response.json();
+  }).then(function(body) {
+      localStorage.setItem('githubApi_token',body.identities[0].access_token)
+
+  });
+            });
+
 
 
         this.auth0.client.userInfo(authResult.accessToken, function(err, user){
