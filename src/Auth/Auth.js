@@ -18,8 +18,6 @@ export default class Auth {
     this.logout = this.logout.bind(this);
     this.handleAuthentication = this.handleAuthentication.bind(this);
     this.isAuthenticated = this.isAuthenticated.bind(this);
-    this.getAccessToken = this.getAccessToken.bind(this);
-    this.getProfile = this.getProfile.bind(this);
   }
 
   login() {
@@ -29,16 +27,14 @@ export default class Auth {
   handleAuthentication() {
   this.auth0.parseHash((err, authResult) => {
       if (authResult && authResult.accessToken && authResult.idToken) {
-         this.setSession(authResult);
-         var decoded = jwt_decode(authResult.idToken);
-          localStorage.setItem('sub', decoded.sub);
-          console.log(authResult.idToken);
-var data =
-{client_id: 'DKQIQKtrUuhPrVyCsOJ0OR4y5s2sm8J1',
-client_secret:'S-GnsMvPaclcn5cXdL8lLYIfy9QUl8oG0EFz6jHUBMAyZe_mQ1utaujLEleex3Hs',
-audience:'https://snippetmanager.eu.auth0.com/api/v2/',
-grant_type:'client_credentials'};
-var oauthToken;
+          this.setSession(authResult);
+          var decoded = jwt_decode(authResult.idToken);
+          var data =
+          {client_id: 'jcoK21L4TzxN5HkimbjsjNgHGkgT5YZ7',
+          client_secret:'fRGnnmurAp8E1VMQ5ZNLtrIgoNV0YqP2smmTJlm2u5wfQ3CunnRWJT6KDeBV-wXM',
+          audience:'https://snippetmanager.eu.auth0.com/api/v2/',
+          grant_type:'client_credentials'};
+          var oauthToken;
           fetch('https://snippetmanager.eu.auth0.com/oauth/token', {
             method: 'POST',
             headers: {
@@ -48,27 +44,17 @@ var oauthToken;
             }).then(function(response) {
                 return response.json();
             }).then(function(body) {
-                      console.log(body)
-                console.log(body.access_token)
-
-fetch('https://snippetmanager.eu.auth0.com/api/v2/users/'+ decoded.sub, {
-  method: 'GET',
-  headers: {
-    'Authorization': 'Bearer ' + body.access_token,
-  }
-  }).then(function(response) {
-      return response.json();
-  }).then(function(body) {
-      localStorage.setItem('githubApi_token',body.identities[0].access_token)
-
-  });
+                fetch('https://snippetmanager.eu.auth0.com/api/v2/users/'+ decoded.sub, {
+                  method: 'GET',
+                  headers: {
+                    'Authorization': 'Bearer ' + body.access_token,
+                  }
+                  }).then(function(response) {
+                      return response.json();
+                  }).then(function(body) {
+                      localStorage.setItem('githubApi_token',body.identities[0].access_token)
+                  });
             });
-
-
-
-        this.auth0.client.userInfo(authResult.accessToken, function(err, user){
-              localStorage.setItem('user', user);
-        });
         history.replace('/home');
       } else if (err) {
         history.replace('/home');
@@ -78,7 +64,7 @@ fetch('https://snippetmanager.eu.auth0.com/api/v2/users/'+ decoded.sub, {
     });
   }
 
-  setSession(authResult, ) {
+  setSession(authResult) {
     // Set the time that the access token will expire at
     let expiresAt = JSON.stringify((authResult.expiresIn * 1000) + new Date().getTime());
     localStorage.setItem('access_token', authResult.accessToken);
@@ -89,31 +75,11 @@ fetch('https://snippetmanager.eu.auth0.com/api/v2/users/'+ decoded.sub, {
     history.replace('/home');
   }
 
-  getAccessToken() {
-    const accessToken = localStorage.getItem('access_token');
-    if (!accessToken) {
-      throw new Error('No access token found');
-    }
-    return accessToken;
-  }
-
-  getProfile(cb) {
-      let accessToken = this.getAccessToken();
-      this.auth0.client.userInfo(accessToken, (err, profile) => {
-        if (profile) {
-          this.userProfile = profile;
-        }
-        cb(err, profile);
-      });
-    }
-
   logout() {
     // Clear access token and ID token from local storage
     localStorage.removeItem('access_token');
     localStorage.removeItem('id_token');
     localStorage.removeItem('expires_at');
-
-    this.userProfile = null;
     // navigate to the home route
     history.replace('/home');
   }

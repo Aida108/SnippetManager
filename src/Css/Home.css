@@ -11,17 +11,16 @@ body {
 .leftColumn {
     overflow: hidden;
     min-height: 50px;
-    padding-left: 30px;
     background-color: #474747 ;
-  background-image: url("https://www.transparenttextures.com/patterns/egg-shell.png");
 }
 
 .rightColumn {
     float: left;
-    width: 680px;
+    width: 651px;
       background-color:white;
     min-height: 50px;
-    margin-left: 10px;
+    margin-left: 50px;
+    margin-top:10px;
 }
 
 .home_header{
@@ -73,17 +72,18 @@ margin: 0;
     margin-left: 10px;
 }
 
-table {
+.rightColumn table {
   border-collapse: separate;
   background:#fff;
   border-radius:2px;
   min-width: 600px;
-  margin:50px auto;
+  margin-top:50px;
+    margin-left:50px;
   box-shadow:0px 0px 5px rgba(0,0,0,0.3);
 }
 
 
-tbody tr td {
+.rightColumn tbody tr td {
   font-family: "Century Gothic", "Helvetica", sans-serif;
   font-weight:400;
 cursor: pointer;
@@ -93,13 +93,13 @@ cursor: pointer;
 
 }
 
-tbody tr:nth-child(2n) {
+.rightColumn tbody tr:nth-child(2n) {
   background-color: #858585 ;
   color:white;
 background-image: url("https://www.transparenttextures.com/patterns/egg-shell.png");
 }
 
-tbody tr:last-child td {
+.rightColumn tbody tr:last-child td {
   border-bottom:none;
   &:first-child {
     border-bottom-left-radius:2px;
@@ -109,11 +109,11 @@ tbody tr:last-child td {
   }
 }
 
-tbody:hover > tr td {
+.rightColumn tbody:hover > tr td {
   opacity:0.5;
 }
 
-tbody:hover > tr:hover td {
+.rightColumn tbody:hover > tr:hover td {
  text-shadow:none;
   color:#2d2d2d;
   opacity:1.0;

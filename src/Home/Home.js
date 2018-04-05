@@ -5,28 +5,13 @@ import '../Css/Home.css';
 const API_URL = 'https://api.github.com/';
 
 class Home extends Component {
-
-  componentWillMount() {
-   this.setState({ profile: {} });
-   const { userProfile, getProfile } = this.props.auth;
-   if (!userProfile) {
-     getProfile((err, profile) => {
-       this.setState({ profile });
-     });
-   } else {
-     this.setState({ profile: userProfile });
-   }
- }
-
   constructor(){
     super();
     this.state = {  gists : [] }
     this.createNewGist = this.createNewGist.bind(this);
     this.CommitNewGist = this.CommitNewGist.bind(this);
     this.getSpecificGist = this.getSpecificGist.bind(this);
-
   }
-
 
   login() {
     this.props.auth.login();
@@ -41,7 +26,7 @@ class Home extends Component {
     method: 'POST',
     headers: {
     'Content-Type': 'application/json',
-      'Authorization': 'Bearer ' + localStorage.getItem('githubApi_token'),
+    'Authorization': 'Bearer ' + localStorage.getItem('githubApi_token'),
     },
     body: JSON.stringify(opts)
     }).then(function(response) {
@@ -56,7 +41,6 @@ class Home extends Component {
   if (content) {
     var opts= {
       description: document.getElementById("snippet_description").value,
-      owner: localStorage.getItem('user'),
       files: {
       [name] : {
           content: content
@@ -69,19 +53,25 @@ class Home extends Component {
   }
  }
 
-
-getGists()
-{
-  setTimeout(function() {
+getGists() {
   fetch(API_URL + 'gists', {
     method: 'GET',
     headers: {
       'Authorization': 'Bearer ' +  localStorage.getItem('githubApi_token'),
         }
    }).then(response => response.json())
-     .then(gists => this.setState({ gists }))
-}.bind(this), 1000)
+     .then(data => {
+       let gistsData = data.map((gist) =>
+       Object.entries(gist.files).map(function([k,v]) {
+        return <tr id={gist.files[k].raw_url} >
+          <td>{gist.files[k].filename}</td>
+       </tr>
+     }))
+   this.setState({gists:gistsData});})
+}
 
+componentDidMount(){
+    this.getGists();
 }
 
  getSpecificGist(){
@@ -90,21 +80,6 @@ getGists()
 
   render() {
   const { isAuthenticated } = this.props.auth;
-    let tagList;
-
-this.getGists();
-if(this.state.gists !=[])
-{
-  tagList = (this.state.gists.map(gist =>
-  Object.entries(gist.files).map(function([k,v]) {
-   return <tr id={gist.files[k].raw_url} >
-     <td>{gist.files[k].filename}</td>
-  </tr>
-  }.bind(this))))
-}
-else {
-tagList = (<div>No snippet found!</div>)
-}
     return (
       <div className="home_container">
         {
@@ -132,10 +107,14 @@ tagList = (<div>No snippet found!</div>)
              <div className="rightColumn">
                 <label className="label_listsnippets">List of { localStorage.getItem('user_nick_name')} snippets</label>
              <table className="snippets_table">
-               <tbody>{tagList}</tbody>
+               <tbody>{this.state.gists}</tbody>
               </table>
              </div>
              <div className="leftColumn">
+             <table>
+               <tbody>
+               <tr>
+               <td>
                <div className="snippets_buttons">
                    <div className="btn_create_snippet ">
                          <a href="#" class="btn btn-sm animated-button sandy-three" onClick={this.CommitNewGist.bind(this)}>Create Snippet</a>
@@ -153,6 +132,10 @@ tagList = (<div>No snippet found!</div>)
                   <textarea id="snippets_editor" rows="13" cols="60"/>
                </div>
                </div>
+               </td>
+               </tr>
+               </tbody>
+               </table>
              </div>
           </div>
      </div>
